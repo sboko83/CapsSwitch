@@ -1,0 +1,36 @@
+#include <windows.h>
+#include "tray.h"
+#include "version.h"
+
+/* Paths are relative to the repository root, where build.ps1 runs rc. */
+IDI_APP ICON "assets\\CapsSwitch.ico"
+IDI_APP_PAUSED ICON "assets\\CapsSwitch.Paused.ico"
+CREATEPROCESS_MANIFEST_RESOURCE_ID RT_MANIFEST "app.manifest"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, 0
+PRODUCTVERSION VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH, 0
+FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEFLAGS 0
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "FileDescription", "CapsSwitch: Caps Lock switches the input language"
+            VALUE "FileVersion", VERSION_STRING
+            VALUE "InternalName", "CapsSwitch"
+            VALUE "LegalCopyright", "Copyright (c) 2026 Sergey Bokonyaev. MIT License"
+            VALUE "OriginalFilename", "CapsSwitch.exe"
+            VALUE "ProductName", "CapsSwitch"
+            VALUE "ProductVersion", VERSION_STRING
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END

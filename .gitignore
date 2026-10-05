@@ -1,0 +1,29 @@
+bin/
+tests/bin/
+*.user
+
+# Generated release packages and temporary builds
+/dist/
+/obj/
+*.pdb
+*.exe
+*.dll
+*.log
+
+# Local editor and agent settings
+/.vs/
+/.vscode/
+/.idea/
+/.codex/
+/.agents/
+
+# Local credentials and shortcuts
+.env
+.env.*
+!.env.example
+*.lnk
+
+# OS files
+Thumbs.db
+Desktop.ini
+.DS_Store

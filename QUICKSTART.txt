@@ -1,0 +1,19 @@
+CapsSwitch 1.0.0
+
+ENGLISH
+Requires Windows 10/11 and at least two keyboard layouts.
+Extract the x64 or ARM64 ZIP and run CapsSwitch.exe. No extra runtime is needed.
+Caps Lock: next layout. Shift + Caps Lock: normal Caps Lock.
+Right-click the tray icon for pause or exit; double-click to pause or resume.
+To start at sign-in, add an EXE shortcut to shell:startup (Win + R).
+Exit before replacing or deleting the EXE. Remove the shortcut before moving it.
+
+РУССКИЙ
+Нужны Windows 10/11 и хотя бы две раскладки.
+Распакуйте ZIP для x64 или ARM64 и запустите CapsSwitch.exe. Дополнительная среда не нужна.
+Caps Lock: следующая раскладка. Shift + Caps Lock: обычный Caps Lock.
+Правый щелчок по значку трея: пауза и выход; двойной щелчок: пауза или продолжение.
+Для запуска при входе добавьте ярлык EXE в shell:startup (Win + R).
+Перед заменой или удалением EXE завершите программу. Перед переносом удалите ярлык.
+
+MIT License, see LICENSE / Лицензия MIT, см. LICENSE.
