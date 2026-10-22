@@ -3,7 +3,7 @@
 
 /* The single source of the version: resources, About, package name. */
 #define VERSION_MAJOR 1
-#define VERSION_MINOR 0
+#define VERSION_MINOR 1
 #define VERSION_PATCH 0
 
 #define VERSION_STR_(a, b, c) #a "." #b "." #c

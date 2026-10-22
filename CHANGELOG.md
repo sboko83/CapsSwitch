@@ -5,10 +5,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-10-22
+
 ### Added
 
 - "Restart as administrator" in the tray menu: relaunches the app elevated, so Caps Lock keeps
   switching layouts in windows that run as administrator.
+- "Start it elevated" sign-in option in the setup: a Task Scheduler job with highest rights
+  starts the app silently at every sign-in (a Run entry cannot elevate).
 
 ## [1.0.0] - 2026-10-03
 

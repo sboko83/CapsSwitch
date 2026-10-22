@@ -34,8 +34,8 @@ Remove that shortcut before moving or deleting the app.
 While paused, Caps Lock works normally. Only one instance runs per Windows session.
 Before updating or deleting the EXE, choose **Exit** or run `CapsSwitch.exe --stop`.
 In windows running as administrator, Caps Lock switches layouts only when CapsSwitch runs
-elevated too: right-click the tray icon and choose **Restart as administrator**. After a new
-sign-in the app starts with normal rights again.
+elevated too: right-click the tray icon and choose **Restart as administrator**, or enable the
+elevated sign-in option in the setup, which starts the app silently through Task Scheduler.
 The sign-in screen and secure UAC desktop are not supported.
 
 ## Build
