@@ -23,7 +23,7 @@ BEGIN
             VALUE "FileDescription", "CapsSwitch: Caps Lock switches the input language"
             VALUE "FileVersion", VERSION_STRING
             VALUE "InternalName", "CapsSwitch"
-            VALUE "LegalCopyright", "Copyright (c) 2026 Sergey Bokonyaev. MIT License"
+            VALUE "LegalCopyright", "Copyright (c) 2026 Sergey Bokonyaev <sergey.bokonyaev@gmail.com>. MIT License"
             VALUE "OriginalFilename", "CapsSwitch.exe"
             VALUE "ProductName", "CapsSwitch"
             VALUE "ProductVersion", VERSION_STRING

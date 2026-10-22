@@ -18,6 +18,7 @@ AppName=CapsSwitch
 AppVersion={#AppVersion}
 AppVerName=CapsSwitch {#AppVersion}
 AppPublisher=Sergey Bokonyaev
+AppContact=sergey.bokonyaev@gmail.com
 VersionInfoVersion={#AppVersion}
 DefaultDirName={autopf}\CapsSwitch
 DisableProgramGroupPage=yes
