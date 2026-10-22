@@ -5,6 +5,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 
 ## [Unreleased]
 
+### Added
+
+- "Restart as administrator" in the tray menu: relaunches the app elevated, so Caps Lock keeps
+  switching layouts in windows that run as administrator.
+
 ## [1.0.0] - 2026-10-03
 
 ### Added

@@ -7,6 +7,7 @@ typedef enum {
     STR_TITLE,
     STR_MENU_HEADER,
     STR_MENU_PAUSE,
+    STR_MENU_RESTART,
     STR_MENU_ABOUT,
     STR_MENU_EXIT,
     STR_TIP_ACTIVE,

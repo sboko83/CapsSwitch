@@ -12,7 +12,7 @@
 #define TIMER_ADD_ICON 2
 #define ADD_ICON_RETRY_MS 2000
 
-enum { CMD_PAUSE = 1, CMD_ABOUT, CMD_EXIT };
+enum { CMD_PAUSE = 1, CMD_RESTART, CMD_ABOUT, CMD_EXIT };
 
 static const wchar_t window_class[] = L"CapsSwitch.Tray";
 static const wchar_t theme_key[] = L"Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
@@ -102,6 +102,30 @@ static void toggle_pause(void) {
     if (icon_added) show_icon(NIM_MODIFY);
 }
 
+static bool running_elevated(void) {
+    HANDLE token;
+    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token)) return false;
+    TOKEN_ELEVATION elevation;
+    DWORD size;
+    BOOL ok = GetTokenInformation(token, TokenElevation, &elevation, sizeof elevation, &size);
+    CloseHandle(token);
+    return ok && elevation.TokenIsElevated != 0;
+}
+
+/* UIPI hides keystrokes in elevated windows from a normal hook; relaunching
+   elevated fixes that. The new process stops this instance itself (--restart). */
+static void restart_as_admin(void) {
+    wchar_t path[MAX_PATH];
+    if (!GetModuleFileNameW(NULL, path, MAX_PATH)) return;
+    SHELLEXECUTEINFOW info = { 0 };
+    info.cbSize = sizeof info;
+    info.lpVerb = L"runas";
+    info.lpFile = path;
+    info.lpParameters = L"--restart";
+    info.nShow = SW_SHOWNORMAL;
+    if (ShellExecuteExW(&info)) DestroyWindow(window);
+}
+
 static void show_about(void) {
     if (about_open) return;
     about_open = true;
@@ -115,6 +139,7 @@ static void show_menu(int x, int y) {
     AppendMenuW(menu, MF_STRING | MF_GRAYED, 0, str(STR_MENU_HEADER));
     AppendMenuW(menu, MF_SEPARATOR, 0, NULL);
     AppendMenuW(menu, MF_STRING | (hook_paused() ? MF_CHECKED : 0), CMD_PAUSE, str(STR_MENU_PAUSE));
+    if (!running_elevated()) AppendMenuW(menu, MF_STRING, CMD_RESTART, str(STR_MENU_RESTART));
     AppendMenuW(menu, MF_STRING, CMD_ABOUT, str(STR_MENU_ABOUT));
     AppendMenuW(menu, MF_SEPARATOR, 0, NULL);
     AppendMenuW(menu, MF_STRING, CMD_EXIT, str(STR_MENU_EXIT));
@@ -127,6 +152,7 @@ static void show_menu(int x, int y) {
     DestroyMenu(menu);
     switch (command) {
     case CMD_PAUSE: toggle_pause(); break;
+    case CMD_RESTART: restart_as_admin(); break;
     case CMD_ABOUT: show_about(); break;
     case CMD_EXIT: DestroyWindow(window); break;
     }

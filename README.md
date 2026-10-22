@@ -28,12 +28,14 @@ Remove that shortcut before moving or deleting the app.
 | Caps Lock | Next layout, once per press |
 | Shift + Caps Lock | Normal Caps Lock |
 | Caps Lock with Ctrl, Alt, or Win | Normal key behavior |
-| Right-click the tray icon | Pause, about, exit |
+| Right-click the tray icon | Pause, restart as administrator, about, exit |
 | Double-click the tray icon | Pause or resume |
 
 While paused, Caps Lock works normally. Only one instance runs per Windows session.
 Before updating or deleting the EXE, choose **Exit** or run `CapsSwitch.exe --stop`.
-Apps running as administrator may require the same permissions for CapsSwitch.
+In windows running as administrator, Caps Lock switches layouts only when CapsSwitch runs
+elevated too: right-click the tray icon and choose **Restart as administrator**. After a new
+sign-in the app starts with normal rights again.
 The sign-in screen and secure UAC desktop are not supported.
 
 ## Build

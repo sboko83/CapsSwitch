@@ -84,6 +84,8 @@ static int message_loop(HWND window, HANDLE stop) {
 static int run(void) {
     const wchar_t *args = arguments();
     if (is_option(args, L"--stop")) return stop_running_instance();
+    /* The elevated relaunch: replace the running instance, then start as usual. */
+    if (is_option(args, L"--restart")) stop_running_instance();
 
     HANDLE instance = CreateMutexW(NULL, TRUE, INSTANCE_NAME);
     if (!instance) return 1;
