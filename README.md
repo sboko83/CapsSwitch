@@ -53,6 +53,10 @@ GitHub Actions runs the same packaging command. Tests cover keyboard state,
 tray icons, and hook lifecycle; layout switching also needs a desktop check.
 [Architecture](docs/architecture.md) (Russian).
 
+## Acknowledgements
+
+CapsSwitch was written with the assistance of Claude Code, Codex, and ZCode.
+
 ## License
 
 [MIT](LICENSE).
