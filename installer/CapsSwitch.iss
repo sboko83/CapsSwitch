@@ -117,15 +117,64 @@ begin
   Result := '';
 end;
 
-procedure CurStepChanged(CurStep: TSetupStep);
+{ schtasks /XML rejects UTF-8 with a BOM or an encoding declaration and reads
+  a plain file as ANSI, so the file stays ASCII: every other character goes
+  out as a numeric reference, a surrogate pair as one code point. }
+function XmlText(const S: String): String;
 var
-  Params: String;
+  I, Code: Integer;
+begin
+  Result := '';
+  I := 1;
+  while I <= Length(S) do begin
+    Code := Ord(S[I]);
+    if (Code >= $D800) and (Code <= $DBFF) and (I < Length(S)) then begin
+      Code := $10000 + ((Code - $D800) shl 10) + (Ord(S[I + 1]) - $DC00);
+      I := I + 1;
+    end;
+    if Code = Ord('&') then Result := Result + '&amp;'
+    else if Code = Ord('<') then Result := Result + '&lt;'
+    else if Code = Ord('>') then Result := Result + '&gt;'
+    else if Code > 127 then Result := Result + '&#' + IntToStr(Code) + ';'
+    else Result := Result + S[I];
+    I := I + 1;
+  end;
+end;
+
+{ A job from XML, not from /TR: /TR splits an unquoted path at its first space
+  ("C:\Program Files"), and its defaults skip the start on battery power, stop
+  the app after 72 hours and run it below normal priority. }
+function CreateTask: Boolean;
+var
+  User, Xml, XmlFile: String;
+begin
+  User := XmlText(GetEnv('USERDOMAIN') + '\' + GetUserNameString);
+  Xml :=
+    '<?xml version="1.0"?>' + #13#10 +
+    '<Task version="1.2" xmlns="http://schemas.microsoft.com/windows/2004/02/mit/task">' + #13#10 +
+    '  <Triggers><LogonTrigger><UserId>' + User + '</UserId></LogonTrigger></Triggers>' + #13#10 +
+    '  <Principals><Principal id="Author"><UserId>' + User + '</UserId>' +
+      '<LogonType>InteractiveToken</LogonType><RunLevel>HighestAvailable</RunLevel></Principal></Principals>' + #13#10 +
+    '  <Settings>' + #13#10 +
+    '    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>' + #13#10 +
+    '    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>' + #13#10 +
+    '    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>' + #13#10 +
+    '    <ExecutionTimeLimit>PT0S</ExecutionTimeLimit>' + #13#10 +
+    '    <Priority>5</Priority>' + #13#10 +
+    '  </Settings>' + #13#10 +
+    '  <Actions Context="Author"><Exec><Command>' +
+      XmlText(ExpandConstant('{app}\CapsSwitch.exe')) + '</Command></Exec></Actions>' + #13#10 +
+    '</Task>' + #13#10;
+  XmlFile := ExpandConstant('{tmp}\CapsSwitchTask.xml');
+  Result := SaveStringToFile(XmlFile, Xml, False) and
+    RunTaskCommand('/Create /F /TN ' + TaskName + ' /XML ' + AddQuotes(XmlFile));
+end;
+
+procedure CurStepChanged(CurStep: TSetupStep);
 begin
   if CurStep <> ssPostInstall then Exit;
   if IsAdminAutostart then begin
-    Params := '/Create /F /TN ' + TaskName + ' /TR ' +
-      AddQuotes(ExpandConstant('{app}\CapsSwitch.exe')) + ' /SC ONLOGON /RL HIGHEST';
-    if not RunTaskCommand(Params) then
+    if not CreateTask then
       MsgBox(CustomMessage('TaskCreateFailed'), mbError, MB_OK);
   end
   { A re-run with the elevated option cleared removes the earlier job. }

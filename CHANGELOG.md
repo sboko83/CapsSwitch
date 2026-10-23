@@ -5,6 +5,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-10-23
+
+### Fixed
+
+- The elevated sign-in option now starts the app when it is installed for all users in Program
+  Files, runs on battery power, and keeps the app running past 72 hours at normal priority.
+  Rerun the setup with the option kept to repair an existing installation.
+
 ## [1.1.0] - 2026-10-22
 
 ### Added
