@@ -5,6 +5,13 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-10-23
+
+### Changed
+
+- The elevated sign-in option in the setup is nested under the sign-in option: clearing sign-in
+  start clears it too. A choice made in an earlier setup is kept.
+
 ## [1.1.1] - 2026-10-23
 
 ### Fixed

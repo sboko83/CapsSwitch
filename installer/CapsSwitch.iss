@@ -51,7 +51,9 @@ ru.TaskCreateFailed=Не удалось создать задачу планир
 
 [Tasks]
 Name: "autostart"; Description: "{cm:Autostart}"
-Name: "autostart_admin"; Description: "{cm:AutostartAdmin}"
+; A child of autostart: clearing autostart clears it too. Up to 1.1.1 it was
+; the top-level "autostart_admin"; CurPageChanged carries a cleared one over.
+Name: "autostart\admin"; Description: "{cm:AutostartAdmin}"
 
 [Files]
 Source: "..\bin\x64\CapsSwitch.exe"; DestDir: "{app}"; Check: not IsArm64; Flags: ignoreversion
@@ -80,10 +82,27 @@ Filename: "{app}\CapsSwitch.exe"; Parameters: "--stop"; Flags: runhidden waitunt
 [Code]
 const
   TaskName = 'CapsSwitch';
+  UninstallKey = 'Software\Microsoft\Windows\CurrentVersion\Uninstall\{D6D12B3B-EAC5-4293-A516-29F73BC50F26}_is1';
+
+var
+  PreviousTasksApplied: Boolean;
 
 function IsAdminAutostart: Boolean;
 begin
-  Result := WizardIsTaskSelected('autostart_admin');
+  Result := WizardIsTaskSelected('autostart') and WizardIsTaskSelected('autostart\admin');
+end;
+
+{ The renamed child is new to the remembered selection and would come back
+  checked, so an "autostart_admin" cleared before is cleared again, once. }
+procedure CurPageChanged(CurPageID: Integer);
+var
+  Deselected: String;
+begin
+  if (CurPageID <> wpSelectTasks) or PreviousTasksApplied then Exit;
+  PreviousTasksApplied := True;
+  if RegQueryStringValue(HKA, UninstallKey, 'Inno Setup: Deselected Tasks', Deselected) and
+     (Pos(',autostart_admin,', ',' + Deselected + ',') > 0) then
+    WizardSelectTasks('!autostart\admin');
 end;
 
 { Runs schtasks with the setup's own rights; a per-user setup is not elevated,
